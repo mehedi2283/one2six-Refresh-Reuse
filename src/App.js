@@ -165,7 +165,6 @@ export default function App() {
   return (
     <div className="page">
       <div className="topbar">
-        <div className="brand">ONE TWO SIX</div>
         <div className="progress">
           Step {step + 1} / {STEPS.length}
         </div>
