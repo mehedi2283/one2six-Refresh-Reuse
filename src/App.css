@@ -222,21 +222,48 @@ body {
 /* ------------------ Intro ------------------ */
 .intro-images.double {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 950px;
 }
 
 .intro-images.double img {
-  width: 45%;
-  border-radius: 0;
+  width: 48%;
+  height: 400px;
   object-fit: cover;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: 0.4s ease;
+  border-radius: 0;
+  transition: transform 0.3s ease;
 }
 
+.intro-images.double img:hover {
+  transform: scale(1.02);
+}
 
+/* ✅ Center button neatly below images */
+.intro-btn {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.intro-btn .btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  text-transform: none;
+  transition: 0.3s ease;
+}
+
+.intro-btn .btn:hover {
+  opacity: 0.85;
+}
 
 .intro-copy {
   text-align: center;
@@ -244,33 +271,36 @@ body {
   line-height: 1.6;
   border: none;
   background: transparent;
+  max-width: 850px;
+  margin: 0 auto 28px;
 }
-.intro-copy:hover {
-  
 
+.intro-copy:hover {
   box-shadow: none;
 }
 
-/* ------------------ Add-ons ------------------ */
-.addon-line {
-  margin-bottom: 30px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 12px;
-}
-
-.addon-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #111;
-}
-
-.addon-sub {
-  font-size: 13px;
-  color: #666;
-  letter-spacing: 0.3px;
-}
-
 /* ------------------ Responsive Layout ------------------ */
+@media (max-width: 1024px) {
+  .fixed-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .media img {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .nav-row {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .fixed-grid {
     display: flex;
@@ -281,28 +311,29 @@ body {
   }
 
   .media {
-    order: -1; /* Moves image on top */
+    order: -1;
     width: 100%;
   }
 
   .media img {
-    width: 50%;
+    width: 80%;
     max-width: 400px;
-    border-radius: 0;
     object-fit: cover;
     margin: 0 auto;
   }
 
-  .content {
-    width: 100%;
+  /* ✅ Keep images side by side (scrollable) */
+  .intro-images.double {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .pill-row {
-    justify-content: center;
-  }
-
-  .nav-row {
-    justify-content: center;
+  .intro-images.double img {
+    flex: 0 0 85%;
+    max-width: 85%;
+    height: 340px;
   }
 
   .btn {
@@ -323,8 +354,25 @@ body {
     padding: 28px 20px;
   }
 
-  .intro-images.double img {
-    width: 100%;
-    max-width: 420px;
+  .intro-btn {
+    margin-top: 24px;
   }
+  .pill-row {
+  justify-content: center;
+}
+.contact-form input{
+  width: 280px;
+}
+}
+
+/* ------------------ Scrollbar ------------------ */
+.intro-images.double::-webkit-scrollbar {
+  height: 6px;
+}
+.intro-images.double::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 0;
+}
+.intro-images.double::-webkit-scrollbar-track {
+  background: transparent;
 }
