@@ -1,38 +1,330 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap");
+
+/* ------------------ Base ------------------ */
+body {
+  background: #f8f6f2;
+  font-family: "Tenor Sans", sans-serif;
+  color: #111;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+/* ------------------ Layout ------------------ */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 24px;
+  font-size: 15px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+/* ------------------ Cards ------------------ */
+.card {
+  background: #fff;
+  border-radius: 0;
+  padding: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: none;
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------ Typography ------------------ */
+.lux-title,
+.lux-h2 {
+  font-family: "Tenor Sans", sans-serif;
+  font-weight: 400;
+  color: #000;
+  text-transform: none;
+}
+
+.lux-title {
   text-align: center;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  line-height: 1.3;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.lux-h2 {
+  font-size: 1.6rem;
+  margin-bottom: 18px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* ------------------ Grids ------------------ */
+.fixed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.media img {
+  width: 100%;
+  border-radius: 0;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.logo-img {
+  max-width: 260px;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  border: none;
+}
+
+/* ------------------ Pills ------------------ */
+.pill-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.qty-pill {
+  padding: 10px 22px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+.qty-pill:hover {
+  border-color: #000;
+}
+
+.qty-pill.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* ------------------ Buttons ------------------ */
+.nav-row {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
+  font-family: "Tenor Sans", sans-serif;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.btn-primary {
+  background: #000;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.btn-ghost:hover {
+  background: #000;
+  color: #fff;
+}
+
+.btn.wide {
+  width: 100%;
+}
+
+/* ------------------ Contact Form ------------------ */
+.contact-form label {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-size: 14px;
+  margin-bottom: 18px;
+  text-align: left;
+  letter-spacing: 0.2px;
+}
+
+.contact-form input {
+  padding: 12px 14px;
+  border: 1px solid #aaa;
+  border-radius: 0;
+  margin-top: 6px;
+  font-family: inherit;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.contact-form input:focus {
+  border-color: #000;
+  outline: none;
+}
+
+/* ------------------ Lists ------------------ */
+.summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summary-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+}
+
+/* ------------------ Misc ------------------ */
+.sub {
+  color: #444;
+  margin-bottom: 24px;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.inline-error {
+  color: #d33;
+  margin-top: 10px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+/* ------------------ Intro ------------------ */
+.intro-images.double {
+  display: flex;
+  gap: 20px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.intro-images.double img {
+  width: 45%;
+  border-radius: 0;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: 0.4s ease;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+
+.intro-copy {
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.6;
+  border: none;
+  background: transparent;
+}
+.intro-copy:hover {
+  
+
+  box-shadow: none;
+}
+
+/* ------------------ Add-ons ------------------ */
+.addon-line {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.addon-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
+}
+
+.addon-sub {
+  font-size: 13px;
+  color: #666;
+  letter-spacing: 0.3px;
+}
+
+/* ------------------ Responsive Layout ------------------ */
+@media (max-width: 768px) {
+  .fixed-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
   }
-  to {
-    transform: rotate(360deg);
+
+  .media {
+    order: -1; /* Moves image on top */
+    width: 100%;
+  }
+
+  .media img {
+    width: 50%;
+    max-width: 400px;
+    border-radius: 0;
+    object-fit: cover;
+    margin: 0 auto;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .pill-row {
+    justify-content: center;
+  }
+
+  .nav-row {
+    justify-content: center;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .lux-title {
+    font-size: 1.6rem;
+  }
+
+  .lux-h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .card {
+    padding: 28px 20px;
+  }
+
+  .intro-images.double img {
+    width: 100%;
+    max-width: 420px;
   }
 }
