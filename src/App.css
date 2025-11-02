@@ -215,6 +215,7 @@ body {
 
 
 
+
 .intro-btn {
   text-align: center;
   margin-top: 32px;
@@ -398,3 +399,13 @@ body {
 .thankyou p{
   text-align: center;
 }
+
+.fancy-btn.reverse::before{
+ transform: translateX(100%) skewX(-20deg);
+  transform-origin: right center;
+}
+
+.fancy-btn.reverse:hover:before {
+ transform: translateX(0) skewX(0);
+}
+

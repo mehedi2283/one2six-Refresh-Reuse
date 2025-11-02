@@ -138,7 +138,7 @@ export default function App() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    e.target.classList.remove("error"); // remove red when user types
+    e.target.classList.remove("error");
   };
 
   const handleSubmit = async (e) => {
@@ -152,9 +152,7 @@ export default function App() {
 
     if (hasEmpty) {
       setError("All fields are required before sending.");
-      document
-        .querySelector(".contact-form")
-        .classList.add("submitted");
+      document.querySelector(".contact-form")?.classList.add("submitted");
 
       Object.keys(formData).forEach((field) => {
         const el = document.querySelector(`input[name="${field}"]`);
@@ -199,9 +197,10 @@ export default function App() {
         </div>
       </div>
 
+      {/* ✅ Fixed Animation Wrapper */}
       <div
-        key={step}
-        className={`step-anim ${isBack ? "slide-left" : "slide-right"}`}
+        key={`${step}-${isBack ? "back" : "forward"}`}
+        className={`step-anim ${isBack ? "slide-in-left" : "slide-in-right"}`}
       >
         {/* Intro */}
         {current.kind === "intro" && (
@@ -249,7 +248,7 @@ export default function App() {
                 </div>
                 {error && <div className="inline-error">{error}</div>}
                 <div className="nav-row">
-                  <button className="fancy-btn" onClick={back}>
+                  <button className="fancy-btn reverse" onClick={back}>
                     ← Back
                   </button>
                   <button className="fancy-btn" onClick={next}>
@@ -273,7 +272,7 @@ export default function App() {
               ))}
             </ul>
             <div className="nav-row">
-              <button className="fancy-btn" onClick={back}>
+              <button className="fancy-btn reverse" onClick={back}>
                 ← Back
               </button>
               <button className="fancy-btn" onClick={next}>
