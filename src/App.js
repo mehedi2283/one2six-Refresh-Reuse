@@ -258,13 +258,12 @@ export default function App() {
         {/* Contact */}
         {current.kind === "contact" && !submitted && (
           <section className="contact card shadow">
-            <h2 className="lux-h2">{current.title}</h2>
+            <h2 className="lux-h2 contact-h2">{current.title}</h2>
             <p className="sub">{current.subtitle}</p>
-            <div className="fixed-grid">
-              <div className="media">
-                <img src={current.image} alt="Company logo" className="logo-img" />
-              </div>
+            <div className="contact-grid">
+               <div></div>
               <form className="contact-form" onSubmit={handleSubmit}>
+               
                 {["name", "address", "email", "phone"].map((field) => (
                   <label key={field}>
                     {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -282,6 +281,7 @@ export default function App() {
                   {loading ? "Sending..." : "Send Me My Quote"}
                 </button>
               </form>
+               <div></div>
             </div>
           </section>
         )}
