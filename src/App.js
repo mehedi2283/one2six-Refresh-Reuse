@@ -18,22 +18,49 @@ const STEPS = [
     cta: "Start My Quote",
     images: ["hero1.webp", "hero2.webp"],
   },
-  { id: "living", kind: "qty", image: "living.png", title: "Living Room",
-    question: "How many living spaces would you like refreshed?", priceKey: "living" },
-  { id: "dining", kind: "qty", image: "Dining room.png", title: "Dining Room",
-    question: "How many dining spaces are included?", priceKey: "dining" },
-  { id: "bedroom", kind: "qty", image: "Bedroom.png", title: "Bedroom",
-    question: "How many bedrooms would you like staged?", priceKey: "bedroom" },
-  { id: "bathroom", kind: "qty", image: "Bathroom.png", title: "Bathrooms",
-    question: "How many bathrooms to style?", priceKey: "bathroom" },
-  { id: "summary", kind: "summary", title: "Your Quote Summary" },
+  {
+    id: "living",
+    kind: "qty",
+    image: "living.png",
+    title: "Living Room",
+    question: "How many living spaces would you like refreshed?",
+    priceKey: "living",
+  },
+  {
+    id: "dining",
+    kind: "qty",
+    image: "Dining room.png",
+    title: "Dining Room",
+    question: "How many dining spaces are included?",
+    priceKey: "dining",
+  },
+  {
+    id: "bedroom",
+    kind: "qty",
+    image: "Bedroom.png",
+    title: "Bedroom",
+    question: "How many bedrooms would you like staged?",
+    priceKey: "bedroom",
+  },
+  {
+    id: "bathroom",
+    kind: "qty",
+    image: "Bathroom.png",
+    title: "Bathrooms",
+    question: "How many bathrooms to style?",
+    priceKey: "bathroom",
+  },
+  {
+    id: "summary",
+    kind: "summary",
+    title: "Your Quote Summary",
+  },
   {
     id: "contact",
     kind: "contact",
-    image:
-      "https://storage.googleapis.com/msgsndr/9BZdBwDz8uXZfiw31MXE/media/67b6de0a7c922f84a939e661.png",
     title: "Your Refresh & Reuse Package Is Ready!",
-    subtitle: "Please fill out your details and we’ll send you an estimate.",
+    subtitle:
+      "Please fill out your details and we’ll send you an estimate.",
   },
 ];
 
@@ -53,7 +80,6 @@ const QtyPill = ({ value, active, onClick }) => (
 export default function App() {
   const [step, setStep] = useState(0);
   const [isBack, setIsBack] = useState(false);
-
   const [qty, setQty] = useState({
     living: null,
     dining: null,
@@ -110,18 +136,46 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    e.target.classList.remove("error"); // remove red when user types
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const hasEmpty =
+      !formData.name.trim() ||
+      !formData.address.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim();
+
+    if (hasEmpty) {
+      setError("All fields are required before sending.");
+      document
+        .querySelector(".contact-form")
+        .classList.add("submitted");
+
+      Object.keys(formData).forEach((field) => {
+        const el = document.querySelector(`input[name="${field}"]`);
+        if (el) {
+          if (!formData[field].trim()) el.classList.add("error");
+          else el.classList.remove("error");
+        }
+      });
+      return;
+    }
+
+    setError("");
     setLoading(true);
+
     const payload = {
       ...formData,
       quoteDetails: lineItems,
       total,
       source: "One Two Six Website - Refresh & Reuse Quote Form",
     };
+
     try {
       await fetch(WEBHOOK_URL, {
         method: "POST",
@@ -131,7 +185,7 @@ export default function App() {
       setSubmitted(true);
     } catch (err) {
       console.error("Webhook Error:", err);
-      alert("Error submitting your quote. Please try again.");
+      setError("Error submitting your quote. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -145,10 +199,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* 🔑 This wrapper gets a new key every step to re-trigger CSS animations */}
       <div
         key={step}
-        className={`step-anim ${isBack ? "slide-in-left" : "slide-in-right"}`}
+        className={`step-anim ${isBack ? "slide-left" : "slide-right"}`}
       >
         {/* Intro */}
         {current.kind === "intro" && (
@@ -237,7 +290,7 @@ export default function App() {
             <p className="sub">{current.subtitle}</p>
             <div className="contact-grid">
               <div></div>
-              <form className="contact-form" onSubmit={handleSubmit} noValidate>
+              <form className="contact-form" onSubmit={handleSubmit}>
                 {["name", "address", "email", "phone"].map((field) => (
                   <label key={field}>
                     {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -257,15 +310,8 @@ export default function App() {
                     />
                   </label>
                 ))}
-                {/* Optional custom error message surface */}
-                {!formData.name ||
-                !formData.address ||
-                !formData.email ||
-                !formData.phone ? (
-                  <div className="inline-error">
-                    All fields are required before sending.
-                  </div>
-                ) : null}
+
+                {error && <div className="inline-error">{error}</div>}
 
                 <button
                   type="submit"
@@ -284,9 +330,7 @@ export default function App() {
         {submitted && (
           <section className="thankyou card">
             <h2 className="lux-h2">Thank You!</h2>
-            <p>
-              Your quote has been sent. Our design team will reach out shortly.
-            </p>
+            <p>Your quote has been sent. Our design team will reach out shortly.</p>
           </section>
         )}
       </div>

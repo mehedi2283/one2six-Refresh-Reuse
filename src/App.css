@@ -17,19 +17,25 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 20px;
-  opacity: 0;
-  transform: translateX(40px);
-  animation: slideNext 0.6s ease forwards;
+  overflow: hidden;
 }
 
-.page.slide-back {
-  animation: slideBack 0.6s ease forwards;
+.step-anim {
+  will-change: transform, opacity;
 }
 
-@keyframes slideNext {
+.slide-in-right {
+  animation: slideInRight 420ms cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.slide-in-left {
+  animation: slideInLeft 420ms cubic-bezier(.22, .61, .36, 1) both;
+}
+
+@keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(40px);
+    transform: translateX(28px);
   }
   to {
     opacity: 1;
@@ -37,14 +43,21 @@ body {
   }
 }
 
-@keyframes slideBack {
+@keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-40px);
+    transform: translateX(-28px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-in-right,
+  .slide-in-left {
+    animation: none !important;
   }
 }
 
@@ -118,7 +131,6 @@ body {
   padding: 10px 22px;
   border: 1px solid #ccc;
   background: #fff;
-  border-radius: 0;
   cursor: pointer;
   transition: all 0.25s ease;
   font-size: 15px;
@@ -134,7 +146,6 @@ body {
   color: #fff;
   border-color: #000;
 }
-
 
 /* ------------------ Navigation Row ------------------ */
 .nav-row {
@@ -161,7 +172,7 @@ body {
   margin-top: 6px;
   font-family: inherit;
   font-size: 15px;
-  transition: 0.3s;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .contact-form input:focus {
@@ -202,9 +213,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-.intro-images.double img:hover {
-  transform: scale(1.02);
-}
+
 
 .intro-btn {
   text-align: center;
@@ -231,6 +240,80 @@ body {
   }
 }
 
+/* ------------------ Luxury Sweep Button ------------------ */
+.fancy-btn {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #000;
+  padding: 12px 26px;
+  background: transparent;
+  color: #000;
+  font-family: "Tenor Sans", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.35s ease, border-color 0.35s ease;
+  z-index: 0;
+}
+
+.fancy-btn.wide {
+  width: 100%;
+}
+
+.fancy-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #a7a58d;
+  transform: translateX(-100%) skewX(20deg);
+  transform-origin: left center;
+  transition: transform 0.55s cubic-bezier(.22, .61, .36, 1);
+  z-index: -1;
+}
+
+.fancy-btn:hover::before {
+  transform: translateX(0) skewX(0);
+}
+
+.fancy-btn:hover {
+  color: #fff;
+  border-color: #a7a58d;
+}
+
+/* ------------------ Error / Validation ------------------ */
+.inline-error {
+  color: #d33 !important;
+  margin-top: 12px;
+  font-size: 14px;
+  animation: fadeError 0.4s ease;
+}
+
+@keyframes fadeError {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Disable browser’s default red validation */
+.contact-form input:invalid {
+  border-color: #aaa;
+  background: #fff;
+}
+
+/* Highlight only after submit */
+.submitted input.error {
+  border-color: #d33;
+  background: #fff9f9;
+}
+
+/* ------------------ Misc ------------------ */
+.sub {
+  text-align: center;
+}
+
 /* ------------------ Responsive Layout ------------------ */
 @media (max-width: 1024px) {
   .fixed-grid {
@@ -250,7 +333,6 @@ body {
 
 @media (max-width: 768px) {
   .fixed-grid {
-    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -258,18 +340,15 @@ body {
 
   .media {
     order: -1;
-    width: 100%;
   }
 
   .media img {
     width: 80%;
     max-width: 400px;
-    margin: 0 auto;
   }
 
   .intro-images.double {
     flex-wrap: nowrap;
-    justify-content: flex-start;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -280,7 +359,6 @@ body {
     height: 340px;
   }
 
-  .btn,
   .fancy-btn {
     font-size: 14px;
     padding: 10px 20px;
@@ -298,16 +376,12 @@ body {
     padding: 28px 20px;
   }
 
-  .intro-btn {
-    margin-top: 24px;
+  .contact-form input {
+    width: 250px;
   }
 
   .pill-row {
     justify-content: center;
-  }
-
-  .contact-form input {
-    width: 250px;
   }
 }
 
@@ -321,97 +395,6 @@ body {
 .intro-images.double::-webkit-scrollbar-track {
   background: transparent;
 }
-
-/* ============ STEP TRANSITIONS ============ */
-/* Wrapper that re-renders each step with a new key */
-.step-anim {
-  will-change: transform, opacity;
-}
-
-/* Slide in from right (next) */
-.slide-in-right {
-  animation: slideInRight 420ms cubic-bezier(.22,.61,.36,1) both;
-}
-
-/* Slide in from left (back) */
-.slide-in-left {
-  animation: slideInLeft 420ms cubic-bezier(.22,.61,.36,1) both;
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(28px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-28px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-/* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .slide-in-right,
-  .slide-in-left {
-    animation: none !important;
-  }
-}
-
-/* ============ LUXURY SWEEP BUTTON ============ */
-.fancy-btn {
-  position: relative;
-  display: inline-block;
-  border: 1px solid #000;
-  padding: 12px 26px;
-  background: transparent;
-  color: #000;
-  font-family: "Tenor Sans", sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-  overflow: hidden;
-  transition: color .35s ease, border-color .35s ease;
-  z-index: 0;
-}
-
-.fancy-btn.wide { width: 100%; }
-
-.fancy-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #a7a58d; /* your gold tone */
-  transform: translateX(-100%) skewX(20deg);
-  transform-origin: left center;
-  transition: transform .55s cubic-bezier(.22,.61,.36,1);
-  z-index: -1;
-}
-
-.fancy-btn:hover::before {
-  transform: translateX(0) skewX(0);
-}
-
-.fancy-btn:hover {
-  color: #fff;
-  border-color: #a7a58d;
-}
-
-/* ============ REQUIRED / ERROR STYLES ============ */
-.inline-error {
-  color: #d33 !important;
-  margin-top: 12px;
-  font-size: 14px;
-}
-
-.contact-form input:invalid {
-  border-color: #d33;
-  background: #fff9f9;
-}
-
-.contact-form input:focus:invalid {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(211, 51, 51, 0.15);
-}
-.sub {
+.thankyou p{
   text-align: center;
 }
-
-
