@@ -9,15 +9,46 @@ body {
   padding: 0;
   line-height: 1.6;
   letter-spacing: 0.2px;
+  overflow-x: hidden;
 }
 
-/* ------------------ Layout ------------------ */
+/* ------------------ Page Layout & Transitions ------------------ */
 .page {
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 20px;
+  opacity: 0;
+  transform: translateX(40px);
+  animation: slideNext 0.6s ease forwards;
 }
 
+.page.slide-back {
+  animation: slideBack 0.6s ease forwards;
+}
+
+@keyframes slideNext {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideBack {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ------------------ Topbar ------------------ */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -28,22 +59,13 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.brand {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 15px;
-  letter-spacing: 1px;
-}
-
 /* ------------------ Cards ------------------ */
 .card {
   background: #f3f3f3;
   border-radius: 0;
   padding: 40px;
-  box-shadow: none;
   transition: 0.3s ease;
 }
-
 
 /* ------------------ Typography ------------------ */
 .lux-title,
@@ -51,7 +73,6 @@ body {
   font-family: "Tenor Sans", sans-serif;
   font-weight: 400;
   color: #000;
-  text-transform: none;
 }
 
 .lux-title {
@@ -64,9 +85,10 @@ body {
 .lux-h2 {
   font-size: 1.6rem;
   margin-bottom: 18px;
+  text-align: center;
 }
 
-/* ------------------ Grids ------------------ */
+/* ------------------ Grid Layout ------------------ */
 .fixed-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -75,29 +97,14 @@ body {
 }
 
 .contact-grid {
-  display: grid; 
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
 }
 
-.contact-h2 {
- text-align: center;
-}
-
-
-
 .media img {
   width: 100%;
-  border-radius: 0;
   object-fit: cover;
-}
-
-.logo-img {
-  max-width: 260px;
-  display: block;
-  margin: 0 auto;
-  object-fit: contain;
-  border: none;
 }
 
 /* ------------------ Pills ------------------ */
@@ -128,48 +135,13 @@ body {
   border-color: #000;
 }
 
-/* ------------------ Buttons ------------------ */
+
+/* ------------------ Navigation Row ------------------ */
 .nav-row {
   margin-top: 28px;
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-}
-
-.btn {
-  font-family: "Tenor Sans", sans-serif;
-  border-radius: 0;
-  cursor: pointer;
-  padding: 12px 26px;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0.4px;
-  border: none;
-  transition: 0.3s ease;
-}
-
-.btn-primary {
-  background: #000;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  opacity: 0.85;
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1px solid #000;
-  color: #000;
-}
-
-.btn-ghost:hover {
-  background: #000;
-  color: #fff;
-}
-
-.btn.wide {
-  width: 100%;
 }
 
 /* ------------------ Contact Form ------------------ */
@@ -210,23 +182,7 @@ body {
   font-size: 15px;
 }
 
-/* ------------------ Misc ------------------ */
-.sub {
-  color: #444;
-  margin-bottom: 24px;
-  font-size: 15px;
-  text-align: center;
-  letter-spacing: 0.3px;
-}
-
-.inline-error {
-  color: #d33;
-  margin-top: 10px;
-  font-size: 14px;
-  letter-spacing: 0.3px;
-}
-
-/* ------------------ Intro ------------------ */
+/* ------------------ Intro Section ------------------ */
 .intro-images.double {
   display: flex;
   justify-content: center;
@@ -243,7 +199,6 @@ body {
   height: 400px;
   object-fit: cover;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 0;
   transition: transform 0.3s ease;
 }
 
@@ -251,56 +206,41 @@ body {
   transform: scale(1.02);
 }
 
-/* ✅ Center button neatly below images */
 .intro-btn {
   text-align: center;
   margin-top: 32px;
-}
-
-.intro-btn .btn {
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 12px 32px;
-  font-size: 15px;
-  letter-spacing: 0.4px;
-  text-transform: none;
-  transition: 0.3s ease;
-}
-
-.intro-btn .btn:hover {
-  opacity: 0.85;
 }
 
 .intro-copy {
   text-align: center;
   font-size: 15px;
   line-height: 1.6;
-  border: none;
-  background: transparent;
   max-width: 850px;
   margin: 0 auto 28px;
 }
 
-.intro-copy:hover {
-  box-shadow: none;
+/* ------------------ Fade-In Elements ------------------ */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 /* ------------------ Responsive Layout ------------------ */
 @media (max-width: 1024px) {
   .fixed-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
     text-align: center;
   }
 
   .media img {
     width: 60%;
     margin: 0 auto;
-  }
-
-  .content {
-    width: 100%;
   }
 
   .nav-row {
@@ -313,7 +253,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     text-align: center;
   }
 
@@ -325,11 +264,9 @@ body {
   .media img {
     width: 80%;
     max-width: 400px;
-    object-fit: cover;
     margin: 0 auto;
   }
 
-  /* ✅ Keep images side by side (scrollable) */
   .intro-images.double {
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -343,7 +280,8 @@ body {
     height: 340px;
   }
 
-  .btn {
+  .btn,
+  .fancy-btn {
     font-size: 14px;
     padding: 10px 20px;
   }
@@ -354,7 +292,6 @@ body {
 
   .lux-h2 {
     font-size: 1.3rem;
-    text-align: center;
   }
 
   .card {
@@ -364,12 +301,14 @@ body {
   .intro-btn {
     margin-top: 24px;
   }
+
   .pill-row {
-  justify-content: center;
-}
-.contact-form input{
-  width: 250px;
-}
+    justify-content: center;
+  }
+
+  .contact-form input {
+    width: 250px;
+  }
 }
 
 /* ------------------ Scrollbar ------------------ */
@@ -378,8 +317,101 @@ body {
 }
 .intro-images.double::-webkit-scrollbar-thumb {
   background: #ccc;
-  border-radius: 0;
 }
 .intro-images.double::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* ============ STEP TRANSITIONS ============ */
+/* Wrapper that re-renders each step with a new key */
+.step-anim {
+  will-change: transform, opacity;
+}
+
+/* Slide in from right (next) */
+.slide-in-right {
+  animation: slideInRight 420ms cubic-bezier(.22,.61,.36,1) both;
+}
+
+/* Slide in from left (back) */
+.slide-in-left {
+  animation: slideInLeft 420ms cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .slide-in-right,
+  .slide-in-left {
+    animation: none !important;
+  }
+}
+
+/* ============ LUXURY SWEEP BUTTON ============ */
+.fancy-btn {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #000;
+  padding: 12px 26px;
+  background: transparent;
+  color: #000;
+  font-family: "Tenor Sans", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color .35s ease, border-color .35s ease;
+  z-index: 0;
+}
+
+.fancy-btn.wide { width: 100%; }
+
+.fancy-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #a7a58d; /* your gold tone */
+  transform: translateX(-100%) skewX(20deg);
+  transform-origin: left center;
+  transition: transform .55s cubic-bezier(.22,.61,.36,1);
+  z-index: -1;
+}
+
+.fancy-btn:hover::before {
+  transform: translateX(0) skewX(0);
+}
+
+.fancy-btn:hover {
+  color: #fff;
+  border-color: #a7a58d;
+}
+
+/* ============ REQUIRED / ERROR STYLES ============ */
+.inline-error {
+  color: #d33 !important;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.contact-form input:invalid {
+  border-color: #d33;
+  background: #fff9f9;
+}
+
+.contact-form input:focus:invalid {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(211, 51, 51, 0.15);
+}
+.sub {
+  text-align: center;
+}
+
+
