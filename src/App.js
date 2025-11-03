@@ -189,15 +189,7 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-  const updateHeight = () => {
-    const height = document.body.scrollHeight;
-    window.parent.postMessage({ type: "setHeight", height }, "*");
-  };
-  updateHeight();
-  window.addEventListener("resize", updateHeight);
-  return () => window.removeEventListener("resize", updateHeight);
-}, []);
+
 
 
   return (
