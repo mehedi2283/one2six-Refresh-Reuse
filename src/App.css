@@ -352,12 +352,16 @@ body {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    gap: 5px;
   }
 
   .intro-images.double img {
-    flex: 0 0 85%;
-    max-width: 85%;
-    height: 340px;
+    flex: 0 0 0;
+  height: auto;
+  aspect-ratio: 4 / 3;  /* or try 3/2 depending on your images */
+  object-fit:cover;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
   }
 
   .fancy-btn {
