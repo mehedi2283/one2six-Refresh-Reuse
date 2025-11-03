@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState , useEffect} from "react";
 import "./App.css";
 
 const PRICING = {
@@ -189,6 +189,17 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+  const updateHeight = () => {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ type: "setHeight", height }, "*");
+  };
+  updateHeight();
+  window.addEventListener("resize", updateHeight);
+  return () => window.removeEventListener("resize", updateHeight);
+}, []);
+
+
   return (
     <div className="page">
       <div className="topbar">
@@ -221,6 +232,7 @@ export default function App() {
             </div>
           </section>
         )}
+        
 
         {/* Quantity Steps */}
         {current.kind === "qty" && (
