@@ -16,7 +16,7 @@ const STEPS = [
     description:
       "Bring new life to your Airbnb or home using One Two Six Designs’ pre-loved inventory. Select how many rooms you'd like styled — we’ll build your instant quote.",
     cta: "Start My Quote",
-    images: ["hero2.webp","hero1.webp" ],
+    images: ["hero1.webp","hero2.webp" ],
   },
   {
     id: "living",

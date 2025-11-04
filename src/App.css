@@ -227,6 +227,8 @@ body {
   line-height: 1.6;
   max-width: 850px;
   margin: 0 auto 28px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* ------------------ Fade-In Elements ------------------ */
@@ -341,6 +343,9 @@ body {
 
   .media {
     order: -1;
+  }
+  .intro-copy{
+    padding-bottom: 0;
   }
 
   .media img {
