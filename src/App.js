@@ -1,11 +1,20 @@
-import React, { useMemo, useState , useEffect} from "react";
+import React, { useMemo, useState } from "react";
 import "./App.css";
 
 const PRICING = {
-  living: { label: "Living Areas (Living/Family)", price: 7800 },
-  dining: { label: "Dining Room", price: 5400 },
-  bedroom: { label: "Bedroom", price: 3350 },
+  living: { label: "Living Areas (Living/Family)", price: 4250 },
+  dining: { label: "Dining Room", price: 2250 },
+  bedroom: { label: "Bedroom", price: 2600 },
   bathroom: { label: "Bathroom", price: 250 },
+  kitchenArt: { label: "Kitchen (Art & Accessories)", price: 100 },
+
+  // Editable optional add-ons
+  kitchenEssentials: { label: "Kitchen Essentials (Add-on)", price: 500 },
+  patio: { label: "Patio Area (Add-on)", price: 1000 },
+
+  // Fixed non-editable add-ons
+  entryway: { label: "Entryway Package (Add-on)", price: 600 },
+  office: { label: "Office / Den Package (Add-on)", price: 1000 },
 };
 
 const STEPS = [
@@ -16,14 +25,14 @@ const STEPS = [
     description:
       "Bring new life to your Airbnb or home using One Two Six Designs’ pre-loved inventory. Select how many rooms you'd like styled — we’ll build your instant quote.",
     cta: "Start My Quote",
-    images: ["hero1.webp","hero2.webp" ],
+    images: ["hero1.webp", "hero2.webp"],
   },
   {
     id: "living",
     kind: "qty",
     image: "living.png",
     title: "Living Room",
-    question: "How many living spaces would you like refreshed?",
+    question: "How many living areas would you like refreshed?",
     priceKey: "living",
   },
   {
@@ -50,6 +59,47 @@ const STEPS = [
     question: "How many bathrooms to style?",
     priceKey: "bathroom",
   },
+  {
+    id: "kitchenArt",
+    kind: "qty",
+    image: "Kitchen.png",
+    title: "Kitchen (Art & Accessories)",
+    question: "How many kitchen areas to decorate?",
+    priceKey: "kitchenArt",
+  },
+
+  // Editable Add-ons (no image)
+  {
+    id: "kitchenEssentials",
+    kind: "qtyNoImage",
+    title: "Kitchen Essentials (Add-on)",
+    question: "Would you like to include Kitchen Essentials?",
+    priceKey: "kitchenEssentials",
+  },
+  {
+    id: "patio",
+    kind: "qtyNoImage",
+    title: "Patio Area (Add-on)",
+    question: "Include patio area setup?",
+    priceKey: "patio",
+  },
+
+  // Fixed Add-ons (no image)
+  {
+    id: "entryway",
+    kind: "fixedNoImage",
+    title: "Entryway Package (Add-on)",
+    question: "Mirror, console, and décor accessories package — $600",
+    priceKey: "entryway",
+  },
+  {
+    id: "office",
+    kind: "fixedNoImage",
+    title: "Office / Den Package (Add-on)",
+    question: "Desk setup, chair, décor accessories — $1,000",
+    priceKey: "office",
+  },
+
   {
     id: "summary",
     kind: "summary",
@@ -80,12 +130,9 @@ const QtyPill = ({ value, active, onClick }) => (
 export default function App() {
   const [step, setStep] = useState(0);
   const [isBack, setIsBack] = useState(false);
-  const [qty, setQty] = useState({
-    living: null,
-    dining: null,
-    bedroom: null,
-    bathroom: null,
-  });
+  const [qty, setQty] = useState(
+    Object.keys(PRICING).reduce((acc, k) => ({ ...acc, [k]: null }), {})
+  );
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -121,10 +168,17 @@ export default function App() {
   );
 
   const next = () => {
-    if (current.kind === "qty" && qty[current.priceKey] === null) {
-      setError("Please choose a quantity to continue.");
+    const optionalKeys = ["kitchenEssentials", "patio", "entryway", "office"];
+
+    if (
+      (current.kind === "qty" || current.kind === "qtyNoImage") &&
+      !optionalKeys.includes(current.priceKey) &&
+      qty[current.priceKey] === null
+    ) {
+      setError("Please select or enter a quantity to continue.");
       return;
     }
+
     setIsBack(false);
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
     window.scrollTo(0, 0);
@@ -153,7 +207,6 @@ export default function App() {
     if (hasEmpty) {
       setError("All fields are required before sending.");
       document.querySelector(".contact-form")?.classList.add("submitted");
-
       Object.keys(formData).forEach((field) => {
         const el = document.querySelector(`input[name="${field}"]`);
         if (el) {
@@ -167,9 +220,30 @@ export default function App() {
     setError("");
     setLoading(true);
 
+    // ✅ Build all items (even unselected)
+    const allItems = Object.keys(PRICING).map((key) => {
+      const q = qty[key] || 0;
+      const price = PRICING[key].price;
+      return {
+        key,
+        label: PRICING[key].label,
+        qty: q,
+        unit: price,
+        total: q * price,
+      };
+    });
+
+    // ✅ Compute add-ons total only
+    const addOnKeys = ["kitchenEssentials", "patio", "entryway", "office"];
+    const addOnsTotal = addOnKeys.reduce((sum, key) => {
+      const q = qty[key] || 0;
+      return sum + q * PRICING[key].price;
+    }, 0);
+
     const payload = {
       ...formData,
-      quoteDetails: lineItems,
+      quoteDetails: allItems,
+      addOnsTotal,
       total,
       source: "One Two Six Website - Refresh & Reuse Quote Form",
     };
@@ -189,9 +263,6 @@ export default function App() {
     }
   };
 
-
-
-
   return (
     <div className="page">
       <div className="topbar">
@@ -200,7 +271,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ✅ Fixed Animation Wrapper */}
       <div
         key={`${step}-${isBack ? "back" : "forward"}`}
         className={`step-anim ${isBack ? "slide-in-left" : "slide-in-right"}`}
@@ -224,9 +294,8 @@ export default function App() {
             </div>
           </section>
         )}
-        
 
-        {/* Quantity Steps */}
+        {/* Steps with images */}
         {current.kind === "qty" && (
           <section className="step card">
             <h2 className="lux-h2">{current.title}</h2>
@@ -237,18 +306,33 @@ export default function App() {
               <div className="content">
                 <p className="question">{current.question}</p>
                 <div className="pill-row">
-                  {["1", "2", "3+"].map((label) => {
-                    const mapped = label === "3+" ? 3 : parseInt(label, 10);
-                    const active = qty[current.priceKey] === mapped;
-                    return (
-                      <QtyPill
-                        key={label}
-                        value={label}
-                        active={active}
-                        onClick={() => setQuantity(current.priceKey, mapped)}
-                      />
-                    );
-                  })}
+                  {[1, 2, 3].map((num) => (
+                    <QtyPill
+                      key={num}
+                      value={num}
+                      active={qty[current.priceKey] === num}
+                      onClick={() =>
+                        setQuantity(
+                          current.priceKey,
+                          qty[current.priceKey] === num ? null : num
+                        )
+                      }
+                    />
+                  ))}
+                  <input
+                    type="number"
+                    min="1"
+                    className="qty-input"
+                    placeholder="Qty"
+                    value={qty[current.priceKey] > 3 ? qty[current.priceKey] : ""}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setQuantity(
+                        current.priceKey,
+                        isNaN(val) ? null : val
+                      );
+                    }}
+                  />
                 </div>
                 {error && <div className="inline-error">{error}</div>}
                 <div className="nav-row">
@@ -264,6 +348,79 @@ export default function App() {
           </section>
         )}
 
+        {/* No-image editable add-ons */}
+        {current.kind === "qtyNoImage" && (
+          <section className="step card no-image">
+            <h2 className="lux-h2">{current.title}</h2>
+            <p className="question">{current.question}</p>
+            <div className="pill-row">
+              {[1, 2, 3].map((num) => (
+                <QtyPill
+                  key={num}
+                  value={num}
+                  active={qty[current.priceKey] === num}
+                  onClick={() =>
+                    setQuantity(
+                      current.priceKey,
+                      qty[current.priceKey] === num ? null : num
+                    )
+                  }
+                />
+              ))}
+              <input
+                type="number"
+                min="1"
+                className="qty-input"
+                placeholder="Qty"
+                value={qty[current.priceKey] > 3 ? qty[current.priceKey] : ""}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setQuantity(
+                    current.priceKey,
+                    isNaN(val) ? null : val
+                  );
+                }}
+              />
+            </div>
+            <div className="nav-row">
+              <button className="fancy-btn reverse" onClick={back}>
+                ← Back
+              </button>
+              <button className="fancy-btn" onClick={next}>
+                Next →
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* No-image fixed add-ons */}
+        {current.kind === "fixedNoImage" && (
+          <section className="step card no-image">
+            <h2 className="lux-h2">{current.title}</h2>
+            <p className="question">{current.question}</p>
+            <div className="pill-row">
+              <QtyPill
+                value="Add"
+                active={qty[current.priceKey] === 1}
+                onClick={() =>
+                  setQuantity(
+                    current.priceKey,
+                    qty[current.priceKey] === 1 ? null : 1
+                  )
+                }
+              />
+            </div>
+            <div className="nav-row">
+              <button className="fancy-btn reverse" onClick={back}>
+                ← Back
+              </button>
+              <button className="fancy-btn" onClick={next}>
+                Next →
+              </button>
+            </div>
+          </section>
+        )}
+
         {/* Summary */}
         {current.kind === "summary" && (
           <section className="summary card">
@@ -275,6 +432,7 @@ export default function App() {
                 </li>
               ))}
             </ul>
+            
             <div className="nav-row">
               <button className="fancy-btn reverse" onClick={back}>
                 ← Back
@@ -313,9 +471,7 @@ export default function App() {
                     />
                   </label>
                 ))}
-
                 {error && <div className="inline-error">{error}</div>}
-
                 <button
                   type="submit"
                   className="fancy-btn wide"
@@ -333,7 +489,9 @@ export default function App() {
         {submitted && (
           <section className="thankyou card">
             <h2 className="lux-h2">Thank You!</h2>
-            <p>Your quote has been sent. Our design team will reach out shortly.</p>
+            <p>
+              Your quote has been sent. Our design team will reach out shortly.
+            </p>
           </section>
         )}
       </div>

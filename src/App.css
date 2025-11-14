@@ -118,13 +118,16 @@ body {
 .media img {
   width: 100%;
   object-fit: cover;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 /* ------------------ Pills ------------------ */
 .pill-row {
   display: flex;
+  align-items: center;
   gap: 10px;
   margin-top: 12px;
+  flex-wrap: wrap;
 }
 
 .qty-pill {
@@ -135,6 +138,8 @@ body {
   transition: all 0.25s ease;
   font-size: 15px;
   letter-spacing: 0.3px;
+  min-width: 50px;
+  text-align: center;
 }
 
 .qty-pill:hover {
@@ -145,6 +150,30 @@ body {
   background: #000;
   color: #fff;
   border-color: #000;
+}
+
+/* ------------------ Quantity Input ------------------ */
+.qty-input {
+  width: 75px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 10px 0;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  appearance: textfield;
+}
+
+.qty-input:focus {
+  border-color: #000;
+  outline: none;
+}
+
+.qty-input::-webkit-inner-spin-button,
+.qty-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* ------------------ Navigation Row ------------------ */
@@ -193,6 +222,13 @@ body {
   font-size: 15px;
 }
 
+.summary-total {
+  text-align: right;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 16px;
+}
+
 /* ------------------ Intro Section ------------------ */
 .intro-images.double {
   display: flex;
@@ -212,9 +248,6 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
 }
-
-
-
 
 .intro-btn {
   text-align: center;
@@ -243,7 +276,7 @@ body {
   }
 }
 
-/* ------------------ Luxury Sweep Button ------------------ */
+/* ------------------ Fancy Button ------------------ */
 .fancy-btn {
   position: relative;
   display: inline-block;
@@ -283,6 +316,15 @@ body {
   border-color: #a7a58d;
 }
 
+.fancy-btn.reverse::before {
+  transform: translateX(100%) skewX(-20deg);
+  transform-origin: right center;
+}
+
+.fancy-btn.reverse:hover::before {
+  transform: translateX(0) skewX(0);
+}
+
 /* ------------------ Error / Validation ------------------ */
 .inline-error {
   color: #d33 !important;
@@ -300,13 +342,11 @@ body {
   }
 }
 
-/* Disable browser’s default red validation */
 .contact-form input:invalid {
   border-color: #aaa;
   background: #fff;
 }
 
-/* Highlight only after submit */
 .submitted input.error {
   border-color: #d33;
   background: #fff9f9;
@@ -314,6 +354,10 @@ body {
 
 /* ------------------ Misc ------------------ */
 .sub {
+  text-align: center;
+}
+
+.thankyou p {
   text-align: center;
 }
 
@@ -344,7 +388,8 @@ body {
   .media {
     order: -1;
   }
-  .intro-copy{
+
+  .intro-copy {
     padding-bottom: 0;
   }
 
@@ -361,12 +406,12 @@ body {
   }
 
   .intro-images.double img {
-    flex: 0 0 0;
-  height: auto;
-  aspect-ratio: 4 / 3;  /* or try 3/2 depending on your images */
-  object-fit:cover;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+    flex: 0 0 auto;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
   }
 
   .fancy-btn {
@@ -405,16 +450,32 @@ body {
 .intro-images.double::-webkit-scrollbar-track {
   background: transparent;
 }
-.thankyou p{
+
+
+/* ------------------ Center Alignment for No-Image Add-ons ------------------ */
+.step.no-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  min-height: 70vh;
 }
 
-.fancy-btn.reverse::before{
- transform: translateX(100%) skewX(-20deg);
-  transform-origin: right center;
+.step.no-image .lux-h2 {
+  margin-bottom: 18px;
 }
 
-.fancy-btn.reverse:hover:before {
- transform: translateX(0) skewX(0);
+.step.no-image .question {
+  margin-bottom: 20px;
+  font-size: 15px;
 }
 
+.step.no-image .pill-row {
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.step.no-image .nav-row {
+  justify-content: center;
+}
