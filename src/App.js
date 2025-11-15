@@ -89,14 +89,14 @@ const STEPS = [
     id: "entryway",
     kind: "fixedNoImage",
     title: "Entryway Package (Add-on)",
-    question: "Mirror, console, and décor accessories package — $600",
+    question: "Include entryway area setup?",
     priceKey: "entryway",
   },
   {
     id: "office",
     kind: "fixedNoImage",
     title: "Office / Den Package (Add-on)",
-    question: "Desk setup, chair, décor accessories — $1,000",
+    question: "Include office area setup?",
     priceKey: "office",
   },
 
