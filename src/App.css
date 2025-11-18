@@ -486,3 +486,20 @@ body {
 .question{
   text-align: center;
 }
+/* Disabled Next Button */
+.fancy-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: #d9d9d9 !important;
+  color: #777 !important;
+  border-color: #d9d9d9 !important;
+
+  /* Remove hover + press animations */
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.fancy-btn:disabled:hover {
+  background-color: #d9d9d9 !important;
+  color: #777 !important;
+}
