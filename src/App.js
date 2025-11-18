@@ -282,16 +282,17 @@ export default function App() {
             <div className="intro-copy card">
               <p>{current.description}</p>
             </div>
-            <div className="intro-images double">
-              {current.images.map((src, i) => (
-                <img key={i} src={src} alt={`Hero ${i + 1}`} />
-              ))}
-            </div>
             <div className="intro-btn">
               <button className="fancy-btn" onClick={next}>
                 {current.cta}
               </button>
             </div>
+            <div className="intro-images double">
+              {current.images.map((src, i) => (
+                <img key={i} src={src} alt={`Hero ${i + 1}`} />
+              ))}
+            </div>
+            
           </section>
         )}
 
